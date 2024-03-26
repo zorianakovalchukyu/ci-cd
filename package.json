@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "build": "echo 'Build project'",
-    "test": "jest"
+    "test": "jest --detectOpenHandles --debug"
   },
   "jest": {
     "testEnvironment": "node"
