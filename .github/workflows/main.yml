@@ -1,0 +1,25 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main  # Adjust this according to your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # You can change the operating system here
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Clones the repository
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'  
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build  
