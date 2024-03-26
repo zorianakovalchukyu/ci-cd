@@ -4,7 +4,6 @@ const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
 require("dotenv").config();
 
-//Cnfigure ports
 const args = process.argv;
 const p_index = args.indexOf("--p");
 const cp_index = args.indexOf("--cp");
@@ -23,7 +22,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
 
@@ -34,7 +33,6 @@ const db = new sqlite3.Database("softserve.db", (err) => {
   console.log("Connected to  database.");
 });
 
-// CREATE
 app.post("/products", (req, res) => {
   const { name, price } = req.body;
   if (typeof name === undefined || price === undefined) {
@@ -55,7 +53,6 @@ app.post("/products", (req, res) => {
   });
 });
 
-// READ all
 app.get("/products", (req, res) => {
   const sql = `SELECT * FROM products`;
   db.all(sql, [], (err, rows) => {
@@ -67,7 +64,6 @@ app.get("/products", (req, res) => {
   });
 });
 
-// READ once
 app.get("/products/:id", (req, res) => {
   const id = req.params.id;
   const sql = `SELECT * FROM products WHERE id = ? `;
@@ -84,7 +80,6 @@ app.get("/products/:id", (req, res) => {
   });
 });
 
-// UPDATE
 app.patch("/products/:id", (req, res) => {
   const id = req.params.id;
   const selectSqlGet = "SELECT name, price FROM products WHERE id = ?";
@@ -112,7 +107,6 @@ app.patch("/products/:id", (req, res) => {
   });
 });
 
-// DELETE
 app.delete("/products/:id", (req, res) => {
   const id = req.params.id;
   const sql = `DELETE FROM products WHERE id = ?`;
@@ -130,3 +124,21 @@ app.delete("/products/:id", (req, res) => {
     });
   });
 });
+
+process.on("SIGINT", () => {
+  console.log("Stopping server...");
+  server.close(() => {
+    console.log("Server stopped.");
+    console.log("Closing database connection...");
+    db.close((err) => {
+      if (err) {
+        console.error("Error closing database connection:", err.message);
+      } else {
+        console.log("Database connection closed.");
+      }
+      process.exit(0);
+    });
+  });
+});
+
+module.exports = app;
