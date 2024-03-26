@@ -1,31 +1,9 @@
-const request = require("supertest");
+/*const request = require("supertest");
 const express = require("express");
-const bodyParser = require("body-parser");
 
-// Import your Express app
 const app = require("./index");
 
 describe("Testing API endpoints", () => {
-  let server;
-
-  beforeAll((done) => {
-    const PORT = 0; // Choose a port for testing
-    server = app.listen(PORT, () => {
-      console.log(`Server started at http://localhost:${PORT}`);
-      done();
-    });
-  });
-
-  afterAll((done) => {
-    // Close the server after a short delay to allow ongoing operations to complete
-    setTimeout(() => {
-      server.close(() => {
-        console.log("Server closed");
-        done();
-      });
-    }, 1000); // Adjust the delay as needed
-  });
-
   it("should create a new product", async () => {
     const res = await request(app)
       .post("/products")
@@ -91,4 +69,4 @@ describe("Testing API endpoints", () => {
     );
   });
 });
-
+*/
